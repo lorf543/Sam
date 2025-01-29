@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}    
+
+
+{% block content %}
+{% include "components/navbar.html" %}
+<a class="btn btn-success mx-5 mt-2" href="{% url 'my_account' %}">Atras <--- </a>
+<div class="container pt-5 container-handled">
+    
+    <div class="card">
+        <h5 class="card-header">{{buyer.name}} {{buyer.last_name}}</h5>
+        <div class="card-body">
+          <p class="card-title"><b>Cedula:</b> {{buyer.cedula}}</p>
+          <p class="card-text"><b>Telefono:</b> {{buyer.phone}}</p>
+          <p><b>Comenatirio del cliente</b></p>
+          <p class="card-text">{{buyer.comment}}</p>
+            <hr>
+            {% for comment in buyer.comments.all %}
+            <li>
+                <strong>{{ comment.autor.username }}:</strong> {{ comment.content }}
+                <small><b>{{ comment.date_creation|timesince }} | {{comment.date_creation}}</b>
+                    {% if comment.autor == request.user %}
+                        <a href="{% url 'update_comment' comment.id %}">Editar</a>
+                    {% endif %}
+                </small>
+            </li>
+            <hr>
+            {% endfor %}
+        </div>
+        <form method="post" action="{% url 'create_comment' buyer.id %}" hx-boost="true">
+            {% csrf_token %}
+            <div class="px-3">
+                {{form|crispy}}
+            </div>
+            <button class="m-2 btn btn-sm btn-success" type="submit">Guardar</button>
+        </form>
+    </div>
+
+
+
+
+
+
+
+
+
+</div>
+{% endblock content %}
+
+
+<div>
+    <p>Cedula: </p>
+    <p>Nombre: </p>
+    <p>Apellido: </p>
+    <p>Telefono: </p>
+    <p>Email: </p>
+    <p>Interes: </p>
+</div>
+<div>
+    <p>{{buyer.cedula}}</p>
+    <p>{{buyer.name}}</p>
+    <p>{{buyer.last_name}}</p>
+    <p>{{buyer.phone}}</p>
+    <p>{{buyer.email}}</p>
+    <p>{{buyer.car}}</p>
+
+</div>

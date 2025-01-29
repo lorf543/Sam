@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}   
+
+
+{% block content %}
+{% include "components/navbar.html" %}
+<div class="container">
+    <a class="btn btn-success mx-5 my-5" href="{% url 'my_account' %}">Atras <--- </a>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button class="m-2 btn btn-sm btn-success" type="submit">Guardar</button>
+    </form>
+</div>
+
+
+
+{% endblock content %}

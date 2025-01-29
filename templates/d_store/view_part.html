@@ -1,0 +1,88 @@
+{% extends "base.html" %} 
+{% load humanizelib %}
+{% block content %} {% include "components/navbar.html" %}
+
+<div class="container d-lg-flex d-block justify-content-center align-items-center">
+  <div>
+    <img
+      class="img-fluid"
+      src="{{product.get_product_image}}"
+      alt="{{ product.brand }}"
+    />  
+  </div>
+
+  <div class="col-lg-6 p-2">
+    <h3>{{product.category}}-{{product.brand}}</h3>
+    <p><strong>Cantidad: </strong>{{product.stock}}</p>
+    {% if product.amp == "none" %}
+      <p>
+        <strong>Amp: </strong>{{product.amp}}
+        <strong>Volts: </strong>{{product.volts}}
+      </p>
+    {% endif %}
+
+    {% if product.type_oild %}
+    <p>
+      <strong>Tipo :</strong>{{product.type_oild }}
+      <strong>Viscocidad :</strong>{{product.viscosity}}
+    </p>
+    {% endif %} 
+    
+    {% if product.psi %}
+      <p><strong> PSI :</strong>{{product.psi}}</p>
+    {% endif %}
+
+    <p>{{product.description}}</p>
+
+    <hr />
+    <h4>${{product.price|intcomma}}</h4>
+    <p>sin impuestos</p>
+    <div>
+      {% if user.is_authenticated %}
+        <div id="button-{{ product.id }}">
+          {% if product.id in in_cart %}
+            <!-- Producto ya está en el carrito -->
+            <button class="btn btn-danger" disabled>
+              En el carrito
+            </button>
+          {% else %}
+            <!-- Producto no está en el carrito -->
+            <button class="btn btn-success"
+                    hx-post="{% url 'add_to_cart_btn' product.id %}"
+                    hx-target="#button-{{ product.id }}"
+                    hx-swap="outerHTML"
+                    hx-headers='{"X-CSRFToken": "{{ csrf_token }}" }'>
+              Agregar al carrito
+            </button>
+          {% endif %}
+        </div>
+      {% else %}
+        <p class="text-danger">Crea una cuenta para poder comprar</p>
+      {% endif %}
+      
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="">
+    <div class="related-products">
+      <h3>Productos Relacionados</h3>
+      <div class="grid-related">
+        {% for related in related_products %}
+        <div class="product-item">
+          <a href="{% url 'view_part' related.slug %}" hx-boost="true">
+            <img
+              src="{{ related.get_product_image }}"
+              alt="{{ related.brand }}"
+            />
+          </a>
+          <p><strong>{{ related.get_product_info }}</strong></p>
+          <p>${{ related.price|intcomma }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  {% endblock content %}
+</div>

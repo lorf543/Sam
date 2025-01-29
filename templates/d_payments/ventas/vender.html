@@ -1,0 +1,61 @@
+{% extends "base.html" %} 
+{% load humanizelib %}
+{% block content %} {% include "components/navbar.html" %}
+
+<div class="container d-lg-flex d-block justify-content-center align-items-center">
+  <div>
+    <img
+      class="img-fluid"
+      src="{{product.get_product_image}}"
+      alt="{{ product.brand }}"
+    />  
+  </div>
+
+  <div class="col-lg-6 p-2">
+    <h3>{{product.category}}-{{product.brand}}</h3>
+    <p><strong>Cantidad: </strong>{{product.stock}}</p>
+    
+    <p>
+      <strong>Amp: </strong>{{product.amp}}
+      <strong>Volts: </strong>{{product.volts}}
+    </p>
+
+    {% if product.type_oild %}
+    <p>
+      <strong>Tipo :</strong>{{product.type_oild }}
+      <strong>Viscocidad :</strong>{{product.viscosity}}
+    </p>
+    {% endif %} {% if product.psi %}
+    <p><strong> Amp :</strong>{{product.psi}}</p>
+    {% endif %}
+
+    <p>{{product.description}}</p>
+
+    <hr />
+    <h4>${{product.price|intcomma}}</h4>
+    <p>sin impuestos</p>
+    <div>
+        
+      
+    </div>
+  </div>
+</div>
+
+<div class="container">
+    <div class="mb-3">
+      <form hx-post="{% url 'check_customer' %}" hx-trigger="keyup change delay:500ms" hx-target="#customer_info" hx-swap="innerHTML">
+        {% csrf_token %}
+        <label for="customer-phone" class="form-label">Número de teléfono del cliente</label>
+        <input type="text" 
+          class="form-control" 
+          id="customer-phone" 
+          name="customer-phone" 
+          placeholder="Ingresa el número de teléfono">
+      </form>
+    </div>
+    <div id="customer_info">
+    </div>
+</div>
+
+
+{% endblock content %}

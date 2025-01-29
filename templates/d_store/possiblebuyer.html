@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+{% include "components/navbar.html" %}
+<section class="container">
+    <!-- Formulario para ingresar la cédula -->
+    <form method="post" hx-post="{% url 'possiblebuyer' car.slug %}" hx-target="#result-container" >
+        {% csrf_token %}
+
+        {% comment %} 
+        <div class="row">
+            <div class="col-5">
+                <label for="cedula">Cédula:</label>
+                <input class="form-control col-5" type="text" id="cedula" name="cedula" required>
+            </div>
+        </div> 
+        {% endcomment %}
+
+        <div class="pt-5 mt-4 d-lg-flex gap-5" >
+            <div class="col-12 col-lg-3 d-flex flex-column">
+                <div class="mb-3">
+                    <label for="cedula">Cédula:</label>
+                    <input class="form-control" type="text" id="cedula" name="cedula" required>
+                </div>
+                <div class="mb-3">
+                    {{ form.phone|as_crispy_field }} 
+                </div>
+                <div class="mb-3">
+                    {{ form.email|as_crispy_field }}
+                </div>
+            </div>
+            <div class="vr d-none d-lg-block"></div>
+            <div>
+                <p>Entidades financieras con las que trabajamos</p>
+            </div>
+        </div>
+        <button class="btn btn-sm btn-success mt-2" type="submit">Buscar</button>
+    </form>
+    
+    <!-- Aquí se muestra el formulario con los datos si la cédula fue validada -->
+    <div id="result-container"></div>
+</section>
+{% endblock content %}

@@ -1,0 +1,28 @@
+{% load static %}
+
+
+
+<section style="background-image: url({% static 'images/que-es-importacion.jpg' %});" class="container-header">
+    <div>
+        <div class="branding ">
+            <p>Sr. Import</p>
+            <div id="colorParts">
+                <h4>Autos & Partes</h4>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<script>
+    const colorParts = document.getElementById("colorParts");
+    const colors = ["red", "blue", "green", "yellow", "orange"]; 
+    let currentIndex = 0;
+
+    function changeColor() {
+        colorParts.style.color = colors[currentIndex];
+        currentIndex = (currentIndex + 1) % colors.length; 
+    }
+
+    setInterval(changeColor, 1000);
+</script>

@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %} 
+
+{% block content %}
+{% include "components/navbar.html" %}
+
+<section class="pt-5 container">
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="row">
+            <div class="form-group col-md-3 mb-0">    
+                {{ form.username|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-6 mb-0">
+                {{ form.email|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-6 mb-0">
+                {{ form.phone|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.address|as_crispy_field }}
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="form-group col-md-4 mb-0">
+                {{ form.password1|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-4 mb-0">
+                {{ form.password2|as_crispy_field }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-3 mb-0">
+                {{ form.city|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.provincia|as_crispy_field }}
+            </div>
+            <div class="form-group col-md-3 mb-0">
+                {{ form.country|as_crispy_field }}
+            </div>
+        </div>
+        
+        <button type="submit" name="add_customer" class="btn btn-success">Registrar Cliente</button>
+    </form>
+      
+
+</section>
+  
+{% endblock content %}

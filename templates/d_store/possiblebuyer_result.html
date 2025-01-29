@@ -1,0 +1,17 @@
+{% load crispy_forms_tags %}
+<div class="result-container">
+    {% if error %}
+        <h3>Error:</h3>
+        <p>{{ error }}</p>
+    {% elif success %}
+        <h3>Resultado:</h3>
+        <p>{{ success }}</p>
+    {% elif nombre %}
+        <h3>Resultado:</h3>
+        <p>Tu solicitud ha sido enviada. Tan pronto como sea posible, estaremos en contacto contigo, 
+            <b>{{ nombre }}</b>.
+        </p>
+    {% else %}
+        <p>No se encontró información.</p>
+    {% endif %}
+</div>

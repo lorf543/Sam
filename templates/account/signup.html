@@ -1,0 +1,64 @@
+{% extends "base_account.html" %}
+{% load crispy_forms_tags %} 
+{% load static %}
+
+{% block content %}
+
+
+<section class="vh-100 gradient-custom" style="
+background-image: url({% static 'images/que-es-importacion.jpg' %});
+  ackground-repeat: no-repeat;
+  background-position: right;
+  background-size: cover;
+">
+  <div class="container py-5 h-100">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-12 col-md-8 col-lg-6 col-xl-5">
+        <div class="card bg-dark text-white" style="border-radius: 1rem">
+          <div class="card-body p-5 text-center">
+
+            <h1 class="mb-4">Regístrate</h1>
+            <form method="post" clas=>
+              {% csrf_token %}
+              <!-- Campo de Nombre de Usuario -->
+              <div class="form-group mb-4">
+                {{ form.username|as_crispy_field }}
+              </div>
+
+              <!-- Campo de Correo Electrónico -->
+              <div class="form-group mb-4">
+                {{ form.email|as_crispy_field }}
+              </div>
+
+              <!-- Campo de Contraseña -->
+              <div class="form-group mb-4">
+                {{ form.password1|as_crispy_field }}
+              </div>
+
+              <!-- Campo de Confirmación de Contraseña -->
+              <div class="form-group mb-4">
+                {{ form.password2|as_crispy_field }}
+              </div>
+
+              <!-- Botón de Enviar -->
+              <button class="btn btn-outline-light btn-lg px-5" type="submit">
+                Crear Cuenta
+              </button>
+            </form>
+
+            <!-- Opciones Adicionales -->
+            <div class="mt-4">
+              <p class="small mb-0">
+                ¿Ya tienes una cuenta? 
+                <a href="{% url 'account_login' %}" class="text-white-50 fw-bold">
+                  Inicia Sesión
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock content %}

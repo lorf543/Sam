@@ -1,0 +1,14 @@
+{% load humanizelib %}
+<h1>Confirmación de venta</h1>
+
+<p>La venta se ha realizado con éxito.</p>
+
+<p>Factura:</p>
+<ul>
+    <li>Producto: {{ invoice.product.brand }}</li>
+    <li>Cantidad: {{ invoice.quantity }}</li>
+    <li>Método de pago: {{ invoice.payment_method }}</li>
+    <li>Total: ${{ invoice.total_amount|intcomma }}</li>
+</ul>
+
+<p>Cliente: {{ customer }}</p>
