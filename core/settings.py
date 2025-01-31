@@ -29,7 +29,9 @@ SECRET_KEY = 'django-insecure-@by&0^$6j$&_v&xp7agn=8j&8le_*s0_ga$7xaac#s+41^p7*t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['c46c-148-103-52-199.ngrok-free.app','127.0.0.1']
+ALLOWED_HOSTS = ['web-production-6c94.up.railway.app','127.0.0.1']
+CORS_ALLOWED_ALL_ORIGINS = True
+CSRF_TRUSTED_ORIGINS = ["https://web-production-6c94.up.railway.app"]
 
 
 # Application definition
@@ -60,8 +62,6 @@ INSTALLED_APPS = [
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-CORS_ALLOWED_ALL_ORIGINS = True
-CSRF_TRUSTED_ORIGINS = ["https://c46c-148-103-52-199.ngrok-free.app"]
 
 
 ACCOUNT_FORMS = {
