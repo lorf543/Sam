@@ -26,6 +26,5 @@ urlpatterns = [
     path('payment/stripe/', include('d_payments.urls')),  # Nota el prefijo configurado aquí
     path('account/', include('d_account.urls')),
 ]
-
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

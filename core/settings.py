@@ -32,7 +32,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-@by&0^$6j$&_v&xp7agn=8j&8le_*s0_ga$7xaac#s+41^p7*t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['web-production-6c94.up.railway.app','127.0.0.1']
 CORS_ALLOWED_ALL_ORIGINS = True
@@ -192,14 +192,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-if DEBUG:
-    STRIPE_PUBLIC_KEY = "pk_test_51QgXQVLLmaNJQ2vmPGMku7Ig9X91Dytv5DDsRr46zTQR3u6Ev1JP91tBO8w04gR5lnWvnoODLTn2fhvfsd9FEIMv004tIfBLJZ"
-    STRIPE_SECRET_KEY = "sk_test_51QgXQVLLmaNJQ2vmIbrOeqs78hl58Ek2Galr4XiuqTVM9tC687qX9Pauanygc95KhUn8PH1yuorhgphaXuIIlKFR00GugJaQeF"
-    STRIPE_ENDPOINT_SECRET = 'whsec_JVe9csJtlf7uBf8vEoufQkW9JoBzbVSi'
+
+STRIPE_PUBLIC_KEY = "pk_test_51QgXQVLLmaNJQ2vmPGMku7Ig9X91Dytv5DDsRr46zTQR3u6Ev1JP91tBO8w04gR5lnWvnoODLTn2fhvfsd9FEIMv004tIfBLJZ"
+STRIPE_SECRET_KEY = "sk_test_51QgXQVLLmaNJQ2vmIbrOeqs78hl58Ek2Galr4XiuqTVM9tC687qX9Pauanygc95KhUn8PH1yuorhgphaXuIIlKFR00GugJaQeF"
+STRIPE_ENDPOINT_SECRET = 'whsec_JVe9csJtlf7uBf8vEoufQkW9JoBzbVSi'
 
 
 ACCOUNT_SIGNUP_REDIRECT_URL = None  # Evita conflictos
 ACCOUNT_SIGNUP_FORM_CLASS = None  # Evita usar el formulario de registro de Allauth
+LOGIN_REDIRECT_URL = '/'
 
 
 
