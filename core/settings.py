@@ -11,8 +11,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+from dotenv import load_dotenv
 import os
 from django.urls import reverse_lazy
+import dj_database_url
+
+
+load_dotenv()
 
 
 
@@ -31,7 +36,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['web-production-6c94.up.railway.app','127.0.0.1']
 CORS_ALLOWED_ALL_ORIGINS = True
-CSRF_TRUSTED_ORIGINS = ["https://web-production-6c94.up.railway.app"]
+CSRF_TRUSTED_ORIGINS = ['http://*',"https://web-production-6c94.up.railway.app"]
 
 
 # Application definition
@@ -126,16 +131,10 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 
 
+
 #Postgress Database
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'koyebdb',
-        'USER': 'koyeb-adm',
-        'PASSWORD': 'npg_QbSB04hlWyMJ',
-        'HOST': 'ep-delicate-fire-a4j30cfs.us-east-1.pg.koyeb.app',
-        'OPTIONS': {'sslmode': 'require'},
-    }
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL'))
 }
 
 
