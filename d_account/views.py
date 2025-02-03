@@ -1,16 +1,13 @@
 from django.shortcuts import get_list_or_404,get_object_or_404,render,redirect
-from django.urls import reverse
 from django.utils.timezone import now 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
-from django.http import HttpResponseForbidden,HttpResponse
+from django.http import HttpResponseForbidden
 
-# Create your views here.
 
 from d_store.models import PossibleBuyer,UserProfile,Comments
 from d_payments.models import Invoice,InvoinceProduct
 from .forms import CommentsForm,UserProfileForm, PedidosForm,CustomUserCreationForm
-
 
 
 def user_register(request):
@@ -28,15 +25,12 @@ def edit_profile(request):
         form = UserProfileForm(request.POST, instance=profile)
         if form.is_valid():
             form.save()
-            return redirect("home")  # Cambiar para probar
+            return redirect("home")
     else:
         form = UserProfileForm(instance=profile)
 
     return render(request, "d_account/edit_profile.html", {"form": form})
 
-
-from django.contrib.auth import login
-from allauth.account.auth_backends import AuthenticationBackend
 
 def custom_signup(request):
     if request.method == "POST":
@@ -69,7 +63,7 @@ def my_account(request):
         'product_invoices':product_invoices,
     }
     
-    return render (request,'d_account/my_account.html ',context)
+    return render (request,'d_account/my_account.html',context)
   
 @login_required(login_url="account_login")    
 def handle_buyer(request,pk):

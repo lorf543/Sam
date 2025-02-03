@@ -69,11 +69,11 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",    
     'd_store',
     'd_payments',
+    'd_account',
     'mathfilters',
     'django_filters',
     'allauth',
     'allauth.account',
-    'd_account'
 ]
 
 
