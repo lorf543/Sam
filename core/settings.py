@@ -23,24 +23,38 @@ load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+ENVIRONMENT = os.getenv('ENVIRONMENT', default='develoment')
 
+ENVIRONMENT = 'production'
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@by&0^$6j$&_v&xp7agn=8j&8le_*s0_ga$7xaac#s+41^p7*t'
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+if ENVIRONMENT == 'devoloment':
+    DEBUG = True
+else:
+    DEBUG = False 
+    
+    
 
-ALLOWED_HOSTS = ['web-production-6c94.up.railway.app','127.0.0.1']
-CORS_ALLOWED_ALL_ORIGINS = True
-CSRF_TRUSTED_ORIGINS = ['http://*',"https://web-production-6c94.up.railway.app"]
 
+ALLOWED_HOSTS = [
+    
+    host.strip() for host in os.getenv('DJANGO_ALLOWED_HOSTS').split(',')
+]
+
+CORS_ALLOWED_ALL_ORIGINS = os.getenv('CORS_ALLOWED_ALL_ORIGINS')
+
+CSRF_TRUSTED_ORIGINS = [
+    host.strip() for host in os.getenv('DJANGO_CSRF_TRUSTED_ORIGINS', "").split(',')
+    if host.strip().startswith("http")
+]
 
 # Application definition
-
 INSTALLED_APPS = [
     'jazzmin',
     'django.contrib.admin',

@@ -13,7 +13,7 @@
 
     <div class="grid-card pt-5">
         {% for car in cars %}
-            <a class="car-card" href="{% url 'car_view' car.slug %}" hx-boost="true" >
+            <a class="car-card" href="{% url 'car_view' car.slug %}" >
                 <div>
                     {% for image in car.product_imange.all %}
                         {% if image.main %}

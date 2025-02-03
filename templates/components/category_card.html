@@ -2,7 +2,7 @@
   {% for category in categories %}
     <div class="grid-item">
       <a href="{% url 'auto_parts' category.slug %}" hx-boost="true">
-        <img src="{{category.image.url}}" alt="{{category.name}}" />
+        {% comment %} <img src="{{category.image.url}}" alt="{{category.name}}" /> {% endcomment %}
         <p class="text-muted">{{category.name}}</p>
       </a>
     </div>

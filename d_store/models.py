@@ -118,7 +118,7 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=0, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    image = models.ImageField(upload_to='part_images', null=True, blank=True)
+    image = models.ImageField(upload_to='part_images', default=get_default_image ,null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, related_name="products_parts", null=True, blank=True) 
     
     amp = models.CharField(max_length=50,null=True, blank=True)
