@@ -106,14 +106,16 @@
         <div class="price-info">
             <div class="d-flex gap-4">
                 <p class="fs-4">{{ car.brand }} {{ car.model }} {{ car.year }}</p>
-                {% if car.possiblebuyercar.all %}
-                    <div class="position-relative">
-                        <a href="{% url 'buyer_list' car.id %}">
-                            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-danger rounded-circle tooltip-trigger">
-                                <span class="visually-hidden">New alerts</span>
-                            </span>
-                        </a>
-                    </div>
+                {% if user.is_authenticated %}
+                    {% if car.possiblebuyercar.all %}
+                        <div class="position-relative">
+                            <a href="{% url 'buyer_list' car.id %}">
+                                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-danger rounded-circle tooltip-trigger">
+                                    <span class="visually-hidden">New alerts</span>
+                                </span>
+                            </a>
+                        </div>
+                    {% endif %}
                 {% endif %}
             </div>
 
