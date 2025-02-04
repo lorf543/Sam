@@ -34,14 +34,17 @@ ENVIRONMENT = 'production'
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+ENVIRONMENT = os.getenv('ENVIRONMENT', default='production')
 
-DEBUG = True
+if ENVIRONMENT == 'development':
+    DEBUG = True
+else:
+    DEBUG = False
     
     
 
 
 ALLOWED_HOSTS = [
-    
     host.strip() for host in os.getenv('DJANGO_ALLOWED_HOSTS').split(',')
 ]
 
@@ -194,8 +197,26 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+if ENVIRONMENT == 'production': 
+    STORAGES = {
+        "default": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+        },
+        "staticfiles": {
+            "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        },
+    }
+    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
+    #to short the url image
+    AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+    #not overwrite docuemnts with the same name
+    AWS_S3_FILE_OVERWRITE = False
+else:
+    MEDIA_ROOT = BASE_DIR / 'media'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -205,9 +226,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 
-STRIPE_PUBLIC_KEY = "pk_test_51QgXQVLLmaNJQ2vmPGMku7Ig9X91Dytv5DDsRr46zTQR3u6Ev1JP91tBO8w04gR5lnWvnoODLTn2fhvfsd9FEIMv004tIfBLJZ"
-STRIPE_SECRET_KEY = "sk_test_51QgXQVLLmaNJQ2vmIbrOeqs78hl58Ek2Galr4XiuqTVM9tC687qX9Pauanygc95KhUn8PH1yuorhgphaXuIIlKFR00GugJaQeF"
-STRIPE_ENDPOINT_SECRET = 'whsec_JVe9csJtlf7uBf8vEoufQkW9JoBzbVSi'
+STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLIC_KEY')
+STRIPE_SECRET_KEY = os.getenv('sk_test_51QgXQVLLmaNJQ2vmIbrOeqs78hl58Ek2Galr4XiuqTVM9tC687qX9Pauanygc95KhUn8PH1yuorhgphaXuIIlKFR00GugJaQeF')
+STRIPE_ENDPOINT_SECRET = os.getenv('whsec_JVe9csJtlf7uBf8vEoufQkW9JoBzbVSi')
 
 
 ACCOUNT_SIGNUP_REDIRECT_URL = None  # Evita conflictos
