@@ -9,7 +9,7 @@ urlpatterns_pedidos = [
 
 urlpatterns = [
     path('my-account',views.my_account,name='my_account'),
-    path('handle-buyer/<int:pk>/',views.handle_buyer, name='handle_buyer'),
+
     path('create-comment/<int:pk>/',views.create_comment,name='create_comment'),
     path('update-comment/<int:pk>/',views.update_comment,name='update_comment'),
     

@@ -10,6 +10,7 @@ from d_payments.models import Invoice,InvoinceProduct
 from .forms import CommentsForm,UserProfileForm, PedidosForm,CustomUserCreationForm
 
 
+
 def user_register(request):
     return render(request, 'account/signup.html')
 
@@ -65,18 +66,7 @@ def my_account(request):
     
     return render (request,'d_account/my_account.html',context)
   
-@login_required(login_url="account_login")    
-def handle_buyer(request,pk):
-    buyer = get_object_or_404(PossibleBuyer, id=pk)
-    car = buyer.car
-    form = CommentsForm()
-    
-    context = {
-        'buyer':buyer,
-        'car':car,
-        'form':form,
-    }
-    return render(request,'d_store/handle_buyer.html',context )
+
 
 
 

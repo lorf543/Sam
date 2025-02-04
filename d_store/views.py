@@ -16,6 +16,7 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 from .models import Car, UserProfile,Category,Product,CartItem,PossibleBuyer
 from .filters import ProductFilter
 from .forms import PossibleBuyerForm
+from d_account.forms import CommentsForm
 from . import cocedom 
 
 
@@ -30,8 +31,9 @@ def home(request):
 
 def view_car(request,slug):
     car = get_object_or_404(Car, slug=slug)
+    cars = Car.objects.all()
     
-    context={'car':car}
+    context={'car':car,'cars':cars}
     return render(request,'d_store/view_car.html',context)
 
 def category_list(request,):
@@ -125,6 +127,32 @@ def view_part(request, slug):
 
 
 
+@login_required(login_url="account_login")    
+def handle_buyer(request,pk):
+    buyer = get_object_or_404(PossibleBuyer, id=pk)
+    car = buyer.car
+    form = CommentsForm()
+    
+    context = {
+        'buyer':buyer,
+        'car':car,
+        'form':form,
+    }
+    return render(request,'d_store/handle_buyer.html',context )
+
+
+
+def buyer_list(request, pk):
+    car = get_object_or_404(Car, id=pk)  
+    buyers = PossibleBuyer.objects.filter(car=car)  
+    
+    print(buyers)
+    
+    context = {'buyers': buyers, 'car': car}
+    return render(request, 'd_store/buyer_list.html', context)
+    
+
+
 def possiblebuyer(request, slug):
     car = get_object_or_404(Car, slug=slug)
     form = PossibleBuyerForm(request.POST or None)
@@ -163,7 +191,8 @@ def possiblebuyer(request, slug):
                 name=name,
                 last_name=last_name,
                 phone=form.cleaned_data['phone'],
-                email=form.cleaned_data['email']
+                email=form.cleaned_data['email'],
+                comment=form.cleaned_data.get('comment', '')  # 🔹 Guarda el comentario si existe
             )
             possible_buyer.save()
             context['success'] = "Tu solicitud ha sido enviada. Tan pronto como sea posible, estaremos en contacto contigo."

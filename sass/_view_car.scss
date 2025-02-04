@@ -1,0 +1,29 @@
+/* Estilo para el contenedor del tooltip */
+.tooltip-trigger {
+    position: relative;
+    cursor: pointer; /* Cambia el cursor para indicar que es interactivo */
+}
+
+/* Estilo para el tooltip */
+.tooltip-trigger::before {
+    content: "Este carro tiene posibles compradores, proceder con cautela"; /* Texto del tooltip */
+    position: absolute;
+    top: -30px; /* Posición arriba del elemento */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333; /* Fondo del tooltip */
+    color: #fff; /* Color del texto */
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0; /* Inicialmente invisible */
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Mostrar el tooltip al hacer hover */
+.tooltip-trigger:hover::before {
+    opacity: 1;
+    visibility: visible;
+}

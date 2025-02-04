@@ -4,50 +4,87 @@
 
 {% block content %}
 {% include "components/navbar.html" %}
-<a class="btn btn-success mx-5 mt-2" href="{% url 'my_account' %}">Atras <--- </a>
-<div class="container pt-5 container-handled">
-    
-    <div class="card">
-        <h5 class="card-header">{{buyer.name}} {{buyer.last_name}}</h5>
-        <div class="card-body">
-          <p class="card-title"><b>Cedula:</b> {{buyer.cedula}}</p>
-          <p class="card-text"><b>Telefono:</b> {{buyer.phone}}</p>
-          <p><b>Comenatirio del cliente</b></p>
-          <p class="card-text">{{buyer.comment}}</p>
-            <hr>
-            {% for comment in buyer.comments.all %}
-            <li>
-                <strong>{{ comment.autor.username }}:</strong> {{ comment.content }}
-                <small><b>{{ comment.date_creation|timesince }} | {{comment.date_creation}}</b>
-                    {% if comment.autor == request.user %}
-                        <a href="{% url 'update_comment' comment.id %}">Editar</a>
-                    {% endif %}
-                </small>
-            </li>
-            <hr>
-            {% endfor %}
-        </div>
-        <form method="post" action="{% url 'create_comment' buyer.id %}" hx-boost="true">
-            {% csrf_token %}
-            <div class="px-3">
-                {{form|crispy}}
+<section class="container">
+    <a class="btn btn-success mx-5 mt-2" href="{% url 'my_account' %}"> <--- Atras</a>
+    <div class="d-flex justify-content-center gap-5">
+        <div class="pt-2 container-handled">
+
+            <div class="card">
+                <h5 class="card-header">{{buyer.name}} {{buyer.last_name}}</h5>
+                <div class="card-body">
+                  <p class="card-title"><b>Cedula:</b> {{buyer.cedula}}</p>
+                  <p class="card-text"><b>Telefono:</b> {{buyer.phone}}</p>
+                  <p><b>Comenatirio del cliente</b></p>
+                  <p class="card-text">{{buyer.comment}}</p>
+                    <hr>
+                    {% for comment in buyer.comments.all %}
+                    <li>
+                        <strong>{{ comment.autor.username }}:</strong> {{ comment.content }}
+                        <small><b>{{ comment.date_creation|timesince }} | {{comment.date_creation}}</b>
+                            {% if comment.autor == request.user %}
+                                <a href="{% url 'update_comment' comment.id %}">Editar</a>
+                            {% endif %}
+                        </small>
+                    </li>
+                    <hr>
+                    {% endfor %}
+                </div>
+                <form method="post" action="{% url 'create_comment' buyer.id %}" hx-boost="true">
+                    {% csrf_token %}
+                    <div class="px-3">
+                        {{form|crispy}}
+                    </div>
+                    <button class="m-2 btn btn-sm btn-success" type="submit">Guardar</button>
+                </form>
             </div>
-            <button class="m-2 btn btn-sm btn-success" type="submit">Guardar</button>
-        </form>
+        </div>
+        <div>
+            <div class="car-details">
+                <div>
+                  <p>Marca: </p>
+                  <p>Modelo: </p>
+                  <p>Año: </p>
+                  <p>Color Ext: </p>
+                  <p>Color Int: </p>
+                  <p>Motor: </p>
+                </div>
+                <div>
+                  <p class="fw-bolder">{{car.brand}}</p>
+                  <p class="fw-bolder">{{car.model}}</p>
+                  <p class="fw-bolder">{{car.year}}</p>
+                  <p class="fw-bolder">{{car.color_ext}}</p>
+                  <p class="fw-bolder">{{car.color_int}}</p>
+                  <p class="fw-bolder">{{car.engine}}</p>
+                </div>
+                <div>
+                  <p>Transmision: </p>
+                  <p>Combustible: </p>
+                  <p>Kilometraje: </p>
+                  <p>Condicion: </p>
+                  <p>Version: </p>
+                </div>
+                <div>
+                  <p class="fw-bolder">{{car.transmission}}</p>
+                  <p class="fw-bolder">{{car.fuel}}</p>
+                  <p class="fw-bolder">{{car.km}} Millas</p>
+                  <p class="fw-bolder">Excelente</p>
+                  <p class="fw-bolder">Americana</p>
+                </div>
+              </div>
+              <hr>
+
+        </div>
     </div>
 
 
+</section>
 
-
-
-
-
-
-
-</div>
 {% endblock content %}
 
 
+
+
+        
 <div>
     <p>Cedula: </p>
     <p>Nombre: </p>

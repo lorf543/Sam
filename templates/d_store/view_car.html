@@ -1,114 +1,165 @@
 {% extends "base.html" %}
 {% load humanizelib %}
-
+{% load static %}
 {% block content %}
 {% include "components/navbar.html" %}
 
-<section class='container pb-5 pt-3 d-sm-flex d-lg-flex gap-3'>
-  <div class="carousel-container">
-    <div id="carouselExample" class="carousel slide">
-      <div class="carousel-inner">
-        {% for image in car.product_imange.all %}
-        <div class="carousel-item {% if forloop.first %}active{% endif %}">
-          <div class="image-car">
-            <img loading="lazy" src="{{ image.image.url }}" alt="{{car.brand}}">
-          </div>
+<style>
+  /* Estilo para el contenedor del tooltip */
+.tooltip-trigger {
+    position: relative;
+    cursor: pointer; /* Cambia el cursor para indicar que es interactivo */
+}
+
+/* Estilo para el tooltip */
+.tooltip-trigger::before {
+    content: "Este carro tiene posibles compradores, proceder con cautela"; /* Texto del tooltip */
+    position: absolute;
+    top: -30px; /* Posición arriba del elemento */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333; /* Fondo del tooltip */
+    color: #fff; /* Color del texto */
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0; /* Inicialmente invisible */
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Mostrar el tooltip al hacer hover */
+.tooltip-trigger:hover::before {
+    opacity: 1;
+    visibility: visible;
+}
+</style>
+
+
+
+<section class="container pb-5 pt-3 d-sm-flex d-lg-flex gap-3">
+    <!-- Carrusel de imágenes -->
+    <div class="carousel-container">
+        <div id="carouselExample" class="carousel slide">
+            <div class="carousel-inner">
+                {% for image in car.product_imange.all %}
+                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                        <div class="image-car">
+                            <img loading="lazy" src="{{ image.image.url }}" alt="{{ car.brand }}">
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
         </div>
-        {% endfor %}
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
-    </div>
-  </div>
-
-  <div>
-    <div class="car-details">
-      <div>
-        <p>Marca: </p>
-        <p>Modelo: </p>
-        <p>Año: </p>
-        <p>Color Ext: </p>
-        <p>Color Int: </p>
-        <p>Motor: </p>
-      </div>
-      <div>
-        <p class="fw-bolder">{{car.brand}}</p>
-        <p class="fw-bolder">{{car.model}}</p>
-        <p class="fw-bolder">{{car.year}}</p>
-        <p class="fw-bolder">{{car.color}}</p>
-        <p class="fw-bolder">{{car.color}}</p>
-        <p class="fw-bolder">{{car.engine}}</p>
-      </div>
-      <div>
-        <p>Transmision: </p>
-        <p>Combustible: </p>
-        <p>Kilometraje: </p>
-        <p>Condicion: </p>
-        <p>Version: </p>
-      </div>
-      <div>
-        <p class="fw-bolder">{{car.transmission}}</p>
-        <p class="fw-bolder">{{car.fuel}}</p>
-        <p class="fw-bolder">{{car.km}} Millas</p>
-        <p class="fw-bolder">Excelente</p>
-        <p class="fw-bolder">Americana</p>
-      </div>
-    </div>
-    <hr>
-    <div class="price-info">
-      <p class="fs-4">{{car.brand}} {{car.model}} {{car.year}}</p>
-      <p id="car-price" class="h2">${{car.price|intcomma}}</p>
-      
-      <form id="payment-form" hx-get="{% url 'calculate_payment' %}" 
-            hx-trigger="change, input from:#months, input from:#initial-payment, input from:#interest-rate" 
-            hx-target="#estimated-payment" hx-swap="innerHTML">
-          
-        <input type="hidden" name="car_price" value="{{ car.price }}">
-
-        <div class="row py-3">
-          <div class="col-6">
-            <label for="months" class="form-label">Número de meses:</label>
-            <select id="months" name="months" class="form-control">
-              <option value="12">12 meses</option>
-              <option value="24">24 meses</option>
-              <option value="36">36 meses</option>
-              <option value="48" selected>48 meses</option>
-              <option value="60">60 meses</option>
-            </select>
-          </div>
-          <div class="col-6">
-            <label for="initial-payment" class="form-label">Pago inicial:</label>
-            <input type="number" id="initial-payment" name="initial_payment" value="200000" class="form-control">
-          </div>
+        <!--mas vehiculos-->
+        <div class="pt-3">
+            <p>mas vehiculos</p>
         </div>
+    </div>
 
-        <div class="row py-3">
-          <div class="col-6">
-            <label for="interest-rate" class="form-label">Interés anual (%):</label>
-            <input type="number" id="interest-rate" name="interest_rate" step="0.01" value="18.00" class="form-control">
-          </div>
+    <!-- Detalles del carro -->
+    <div>
+        <div class="car-details">
+            <div>
+                <p>Marca:</p>
+                <p>Modelo:</p>
+                <p>Año:</p>
+                <p>Color Ext:</p>
+                <p>Color Int:</p>
+                <p>Motor:</p>
+            </div>
+            <div>
+                <p class="fw-bolder">{{ car.brand }}</p>
+                <p class="fw-bolder">{{ car.model }}</p>
+                <p class="fw-bolder">{{ car.year }}</p>
+                <p class="fw-bolder">{{ car.color_ext }}</p>
+                <p class="fw-bolder">{{ car.color_int }}</p>
+                <p class="fw-bolder">{{ car.engine }}</p>
+            </div>
+            <div>
+                <p>Transmisión:</p>
+                <p>Combustible:</p>
+                <p>Kilometraje:</p>
+                <p>Condición:</p>
+                <p>Versión:</p>
+            </div>
+            <div>
+                <p class="fw-bolder">{{ car.transmission }}</p>
+                <p class="fw-bolder">{{ car.fuel }}</p>
+                <p class="fw-bolder">{{ car.km }} Millas</p>
+                <p class="fw-bolder">Excelente</p>
+                <p class="fw-bolder">Americana</p>
+            </div>
         </div>
-      </form>
+        <hr>
 
-      <div class="danger-info mt-3">
-        <p id="estimated-payment" class="fs-4">Estimado mensual $12.800.50</p>
-        <small>No incluye seguro</small>
-      </div>
+        <!-- Información de precio y formulario de pago -->
+        <div class="price-info">
+            <div class="d-flex gap-4">
+                <p class="fs-4">{{ car.brand }} {{ car.model }} {{ car.year }}</p>
+                {% if car.possiblebuyercar.all %}
+                    <div class="position-relative">
+                        <a href="{% url 'buyer_list' car.id %}">
+                            <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-danger rounded-circle tooltip-trigger">
+                                <span class="visually-hidden">New alerts</span>
+                            </span>
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
 
+            <p id="car-price" class="h2">${{ car.price|intcomma }}</p>
 
+            <!-- Formulario de cálculo de pago -->
+            <form id="payment-form" hx-get="{% url 'calculate_payment' %}" 
+                  hx-trigger="change, input from:#months, input from:#initial-payment, input from:#interest-rate" 
+                  hx-target="#estimated-payment" hx-swap="innerHTML">
+                <input type="hidden" name="car_price" value="{{ car.price }}">
+
+                <div class="row py-3">
+                    <div class="col-6">
+                        <label for="months" class="form-label">Número de meses:</label>
+                        <select id="months" name="months" class="form-control">
+                            <option value="12">12 meses</option>
+                            <option value="24">24 meses</option>
+                            <option value="36">36 meses</option>
+                            <option value="48" selected>48 meses</option>
+                            <option value="60">60 meses</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label for="initial-payment" class="form-label">Pago inicial:</label>
+                        <input type="number" id="initial-payment" name="initial_payment" value="200000" class="form-control">
+                    </div>
+                </div>
+
+                <div class="row py-3">
+                    <div class="col-6">
+                        <label for="interest-rate" class="form-label">Interés anual (%):</label>
+                        <input type="number" id="interest-rate" name="interest_rate" step="0.01" value="18.00" class="form-control">
+                    </div>
+                </div>
+            </form>
+
+            <!-- Información de pago estimado -->
+            <div class="danger-info mt-3">
+                <p id="estimated-payment" class="fs-4">Estimado mensual $12.800.50</p>
+                <small>No incluye seguro/gastos de cierre</small>
+                <div class="col-4 pt-3">
+                    <a href="{% url 'possiblebuyer' car.slug %}" type="button" class="btn btn-success">Lo quiero</a>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="row">
-      <div class="col-4 pt-3">
-        <a href="{% url 'possiblebuyer' car.slug %}" type="button" class="btn btn-success">Lo quiero</a>
-      </div>
-    </div>
-  </div>
-  
+    
 </section>
 {% endblock content %}

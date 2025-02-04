@@ -5,7 +5,7 @@
 {% block content %}
 <section class="vh-100 gradient-custom" style="
   background-image: url({% static 'images/que-es-importacion.jpg' %});
-    ackground-repeat: no-repeat;
+    background-repeat: no-repeat;
     background-position: right;
     background-size: cover;
   ">
@@ -18,6 +18,18 @@
             
             <form method="post">
               {% csrf_token %}
+              
+              <!-- Mostrar errores generales del formulario -->
+              {% if form.errors %}
+                <div id="error-message" class="alert alert-danger">
+                  {% for field, errors in form.errors.items %}
+                    {% for error in errors %}
+                      <p>{{ error }}</p>
+                    {% endfor %}
+                  {% endfor %}
+                </div>
+              {% endif %}
+
               <!-- Campo de Usuario/Email -->
               <div class="form-group mb-4">
                 {{ form.login|as_crispy_field }}
@@ -49,5 +61,18 @@
     </div>
   </div>
 </section>
+
+<!-- Script para ocultar el mensaje de error después de 3 segundos -->
+<script>
+  // Selecciona el contenedor de errores
+  const errorMessage = document.getElementById('error-message');
+
+  // Si existe el contenedor de errores, ocúltalo después de 3 segundos
+  if (errorMessage) {
+    setTimeout(() => {
+      errorMessage.style.display = 'none'; // Oculta el mensaje
+    }, 3000); // 3000 milisegundos = 3 segundos
+  }
+</script>
 
 {% endblock content %}

@@ -18,6 +18,8 @@ urlpatterns = [
     path('car/<slug:slug>/',views.view_car,name="car_view"),
     
     path('possiblebuyer/<slug:slug>/', views.possiblebuyer, name='possiblebuyer'),
+    path('handle-buyer/<int:pk>/',views.handle_buyer, name='handle_buyer'),
+    path('buyer-list/<int:pk>/',views.buyer_list, name='buyer_list'),
     path("calculate-payment/", views.calculate_payment, name="calculate_payment"),
 ]
 
