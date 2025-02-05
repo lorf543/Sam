@@ -40,8 +40,8 @@ ENVIRONMENT = os.getenv('ENVIRONMENT', default='production')
 #     DEBUG = True
 # else:
 #     DEBUG = False
-DEBUG = True
-    
+
+DEBUG = os.getenv('DEBUG')
 
 
 ALLOWED_HOSTS = [
@@ -77,8 +77,17 @@ INSTALLED_APPS = [
     'django_filters',
     'allauth',
     'allauth.account',
+    'compressor',
 ]
 
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other finders..
+    'compressor.finders.CompressorFinder',
+)
+COMPRESS_ENABLED = True
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
@@ -89,6 +98,7 @@ ACCOUNT_FORMS = {
     'login': 'd_account.forms.CustomLoginForm',
     'signup': 'd_account.forms.CustomSignupForm',
 }
+
 
 
 
@@ -195,6 +205,8 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # STATICFILES_STORAGE = "django.contrib.staticfiles.storage.ManifestStaticFilesStorage"
 # STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
