@@ -8,7 +8,9 @@ crispy-bootstrap5==2024.10
 dj-database-url==2.3.0
 Django==5.1.4
 django-allauth==65.3.1
+django-appconf==1.0.6
 django-cleanup==9.0.0
+django-compressor==4.5.1
 django-crispy-forms==2.3
 django-filter==24.3
 django-htmx==1.21.0
@@ -27,7 +29,9 @@ pillow==11.0.0
 psycopg2-binary==2.9.10
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
+rcssmin==1.1.2
 requests==2.32.3
+rjsmin==1.2.2
 s3transfer==0.11.2
 six==1.17.0
 soupsieve==2.6
