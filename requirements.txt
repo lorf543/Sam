@@ -18,6 +18,7 @@ django-humanize==0.1.2
 django-jazzmin==3.0.1
 django-mathfilters==1.0.0
 django-storages==1.14.4
+django-widget-tweaks==1.5.0
 Faker==33.1.0
 gunicorn==23.0.0
 humanize==4.11.0
