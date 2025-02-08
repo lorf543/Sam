@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load widget_tweaks %}
 
 {% block content %}
 {% include "components/navbar.html" %}
@@ -13,10 +14,11 @@
             <div class="col-12 col-lg-3 d-flex flex-column">
                 <div class="mb-3">
                     <label for="cedula">Cédula:</label>
-                    <input class="form-control" type="text" id="cedula" name="cedula" required>
+                    <input class="form-control" type="text" placeholder="000-0000000-0" id="cedula" name="cedula" required >
                 </div>
                 <div class="">
-                    {{ form.phone|as_crispy_field }} 
+                    <!-- Aplicar la máscara al campo phone -->
+                    {% render_field form.phone class="form-control" data-mask="000-000-0000" placeholder="000-000-0000" %}
                 </div>
                 <div class="">
                     {{ form.email|as_crispy_field }}
@@ -42,4 +44,13 @@
     <!-- Aquí se muestra el formulario con los datos si la cédula fue validada -->
     <div id="result-container"></div>
 </section>
+
+<script>
+    $(document).ready(function(){
+        // Aplicar la máscara a todos los elementos con el atributo data-mask
+        $('[data-mask]').each(function() {
+            $(this).mask($(this).data('mask'));
+        });
+    });
+</script>
 {% endblock content %}

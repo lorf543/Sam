@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'django_cleanup.apps.CleanupConfig',
+    'django.contrib.sitemaps',
     'django_htmx',
     'django_humanize',
     "crispy_forms",
@@ -72,6 +73,7 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'compressor',
+    'widget_tweaks',
 ]
 
 

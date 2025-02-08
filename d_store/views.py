@@ -154,52 +154,55 @@ def buyer_list(request, pk):
 
 
 def possiblebuyer(request, slug):
-    car = get_object_or_404(Car, slug=slug)
+    
     form = PossibleBuyerForm(request.POST or None)
-    context = {'car': car, 'form': form}
+    car = get_object_or_404(Car, slug=slug)
+    cedula = request.POST.get('cedula', '').strip()
+    
+    
+    print(cedula)
+    result = cocedom.ComprobarCedula(cedula)
+    print(result)
+    # print("Solicitud recibida")
+    # form = PossibleBuyerForm(request.POST or None)
+    # print("Formulario creado:", form.data)
 
-    if request.method == 'POST' and 'HX-Request' in request.headers:
-        cedula = request.POST.get('cedula', '').strip()
+    # if request.method == 'POST' and 'HX-Request' in request.headers:
+    #     print("Es una solicitud POST de HTMX")
+    #     cedula = request.POST.get('cedula', '').strip()
+    #     print("Cédula recibida:", cedula)
 
-        if not re.match(r'^\d{3}-\d{7}-\d{1}$', cedula):
-            context['error'] = "El formato de la cédula es incorrecto. Debe ser 000-0000000-0."
-            return render(request, 'd_store/possiblebuyer_result.html', context)
+    #     if not re.match(r'^\d{3}-\d{7}-\d{1}$', cedula):
+    #         print("Error: Formato de cédula incorrecto")
+    #         return render(request, 'd_store/possiblebuyer_result.html', {'error': "Formato incorrecto"})
 
-        resultado = cocedom.ComprobarCedula(cedula)
+    #     resultado = cocedom.ComprobarCedula(cedula)
+    #     print("Resultado de validación de cédula:", resultado)
 
-        if not resultado or 'nombre' not in resultado:
-            context['error'] = "La cédula no existe en el registro."
-            return render(request, 'd_store/possiblebuyer_result.html', context)
+    #     if not resultado or 'nombre' not in resultado:
+    #         print("Error: Cédula no encontrada")
+    #         return render(request, 'd_store/possiblebuyer_result.html', {'error': "Cédula no existe"})
 
-        nombre_completo = resultado.get('nombre', '').strip()
-        nombre_partes = nombre_completo.split()
+    #     nombre_completo = resultado.get('nombre', '').strip()
+    #     print("Nombre obtenido:", nombre_completo)
 
-        name = " ".join(nombre_partes[:2]).capitalize() if len(nombre_partes) > 1 else None
-        last_name = " ".join(nombre_partes[-2:]).capitalize() if len(nombre_partes) > 1 else None
+    #     if form.is_valid():
+    #         print("Formulario válido, guardando en la base de datos...")
+    #         possible_buyer = PossibleBuyer.objects.create(
+    #             car=car,
+    #             cedula=cedula,
+    #             name=nombre_completo,
+    #             last_name="Apellido",
+    #             phone=form.cleaned_data['phone'],
+    #             email=form.cleaned_data['email'],
+    #             comment=form.cleaned_data.get('comment', '')
+    #         )
+    #         possible_buyer.save()
+    #         print("Guardado exitosamente")
+    #     else:
+    #         print("Errores del formulario:", form.errors)
 
-        if not name or not last_name:
-            context['error'] = "No se pudo obtener información válida de la cédula."
-            return render(request, 'd_store/possiblebuyer_result.html', context)
-
-        context['nombre'] = nombre_completo.capitalize()
-        context['cedula'] = resultado.get('cedula', '').capitalize()
-
-        if form.is_valid():
-            possible_buyer = PossibleBuyer.objects.create(
-                car=car,
-                cedula=cedula,
-                name=name,
-                last_name=last_name,
-                phone=form.cleaned_data['phone'],
-                email=form.cleaned_data['email'],
-                comment=form.cleaned_data.get('comment', '')  # 🔹 Guarda el comentario si existe
-            )
-            possible_buyer.save()
-            context['success'] = "Tu solicitud ha sido enviada. Tan pronto como sea posible, estaremos en contacto contigo."
-
-        return render(request, 'd_store/possiblebuyer_result.html', context)
-
-    return render(request, 'd_store/possiblebuyer.html', context)
+    return render(request, 'd_store/possiblebuyer.html', {'car': car, 'form': form})
 
 
 

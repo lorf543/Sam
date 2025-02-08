@@ -102,6 +102,9 @@ class Car(models.Model):
     def __str__(self):
         return f"{self.brand} {self.model} ({self.year})"
     
+    def get_absolute_url(self):
+        return f'/car/{self.slug}'
+    
     
     def save(self, *args, **kwargs):
         

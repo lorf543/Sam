@@ -1,12 +1,18 @@
 from django import forms
 
 
+
 class PossibleBuyerForm(forms.Form):
-    phone = forms.CharField(max_length=50, required=True)
-    email = forms.EmailField(required=True)
+    phone = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': '000-000-0000'}),
+        max_length=50,
+    )
+    email = forms.EmailField(
+
+    )
     comment = forms.CharField(widget=forms.Textarea(attrs={
         'placeholder':'Comenta algo en caso de ser necesario...',
         "rows":"5",
-        }), required=False)
+        }),)
     
     
