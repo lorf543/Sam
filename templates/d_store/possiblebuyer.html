@@ -12,12 +12,13 @@
 
         <div class="pt-5 mt-4 d-lg-flex gap-5" >
             <div class="col-12 col-lg-3 d-flex flex-column">
-                <div class="mb-3">
-                    <label for="cedula">Cédula:</label>
-                    <input class="form-control" type="text" placeholder="000-0000000-0" id="cedula" name="cedula" required >
+                <div class="">
+                    {{ form.name|as_crispy_field }}
                 </div>
                 <div class="">
-                    <!-- Aplicar la máscara al campo phone -->
+                    {{ form.last_name|as_crispy_field }}
+                </div>
+                <div class="">
                     {% render_field form.phone class="form-control" data-mask="000-000-0000" placeholder="000-000-0000" %}
                 </div>
                 <div class="">
@@ -26,6 +27,7 @@
                 <div class="">
                     {{ form.comment|as_crispy_field }} 
                 </div>
+                <div>{{message}}</div>
             </div>
             <div class="vr d-none d-lg-block"></div>
             <div>

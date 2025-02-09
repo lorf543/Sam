@@ -4,6 +4,8 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login
 from django.http import HttpResponseForbidden
 
+from django.http import Http404
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from d_store.models import PossibleBuyer,UserProfile,Comments
 from d_payments.models import Invoice,InvoinceProduct
@@ -53,18 +55,27 @@ def my_account(request):
     current_user = request.user
     user_profile = UserProfile.objects.get(user=current_user)
     product_invoices = InvoinceProduct.objects.filter(user=request.user)
-    
-    # if request.user.is_superuser:    
+
+    # Paginación
+    paginator = Paginator(buyerlist, 5)
+    page = request.GET.get('page')
+
+    try:
+        buyerlist_paginated = paginator.page(page)
+    except PageNotAnInteger:
+        buyerlist_paginated = paginator.page(1)
+    except EmptyPage:
+        buyerlist_paginated = paginator.page(paginator.num_pages)
 
     context = {
-        'buyerlist':buyerlist,
-        'invoices':invoices,
-        'current_user':current_user,
-        'user_profile':user_profile,
-        'product_invoices':product_invoices,
+        'buyerlist_paginated': buyerlist_paginated,
+        'invoices': invoices,
+        'current_user': current_user,
+        'user_profile': user_profile,
+        'product_invoices': product_invoices,
     }
-    
-    return render (request,'d_account/my_account.html',context)
+
+    return render(request, 'd_account/my_account.html', context)
   
 
 

@@ -124,9 +124,6 @@ def view_part(request, slug):
     }
     return render(request, 'd_store/view_part.html', context)
 
-
-
-
 @login_required(login_url="account_login")    
 def handle_buyer(request,pk):
     buyer = get_object_or_404(PossibleBuyer, id=pk)
@@ -140,8 +137,6 @@ def handle_buyer(request,pk):
     }
     return render(request,'d_store/handle_buyer.html',context )
 
-
-
 def buyer_list(request, pk):
     car = get_object_or_404(Car, id=pk)  
     buyers = PossibleBuyer.objects.filter(car=car)  
@@ -151,60 +146,21 @@ def buyer_list(request, pk):
     context = {'buyers': buyers, 'car': car}
     return render(request, 'd_store/buyer_list.html', context)
     
-
-
 def possiblebuyer(request, slug):
-    
-    form = PossibleBuyerForm(request.POST or None)
+    form = PossibleBuyerForm()
     car = get_object_or_404(Car, slug=slug)
-    cedula = request.POST.get('cedula', '').strip()
-    
-    
-    print(cedula)
-    result = cocedom.ComprobarCedula(cedula)
-    print(result)
-    # print("Solicitud recibida")
-    # form = PossibleBuyerForm(request.POST or None)
-    # print("Formulario creado:", form.data)
-
-    # if request.method == 'POST' and 'HX-Request' in request.headers:
-    #     print("Es una solicitud POST de HTMX")
-    #     cedula = request.POST.get('cedula', '').strip()
-    #     print("Cédula recibida:", cedula)
-
-    #     if not re.match(r'^\d{3}-\d{7}-\d{1}$', cedula):
-    #         print("Error: Formato de cédula incorrecto")
-    #         return render(request, 'd_store/possiblebuyer_result.html', {'error': "Formato incorrecto"})
-
-    #     resultado = cocedom.ComprobarCedula(cedula)
-    #     print("Resultado de validación de cédula:", resultado)
-
-    #     if not resultado or 'nombre' not in resultado:
-    #         print("Error: Cédula no encontrada")
-    #         return render(request, 'd_store/possiblebuyer_result.html', {'error': "Cédula no existe"})
-
-    #     nombre_completo = resultado.get('nombre', '').strip()
-    #     print("Nombre obtenido:", nombre_completo)
-
-    #     if form.is_valid():
-    #         print("Formulario válido, guardando en la base de datos...")
-    #         possible_buyer = PossibleBuyer.objects.create(
-    #             car=car,
-    #             cedula=cedula,
-    #             name=nombre_completo,
-    #             last_name="Apellido",
-    #             phone=form.cleaned_data['phone'],
-    #             email=form.cleaned_data['email'],
-    #             comment=form.cleaned_data.get('comment', '')
-    #         )
-    #         possible_buyer.save()
-    #         print("Guardado exitosamente")
-    #     else:
-    #         print("Errores del formulario:", form.errors)
-
-    return render(request, 'd_store/possiblebuyer.html', {'car': car, 'form': form})
-
-
+    context = {'car': car, 'form': form}
+    if request.method == 'POST':
+        if form.is_valid():
+            possible_buyer = form.save(commit=False)
+            possible_buyer.car = car
+            possible_buyer.save()
+            context['message'] = "Tu solicitud ha sido enviada. Tan pronto como sea posible, estaremos en contacto contigo"
+            return render(request, 'd_store/possiblebuyer.html', context)
+        else:
+            context['message'] = "Error: por favor, revise los campos del formulario"
+            return render(request, 'd_store/possiblebuyer.html', context)
+    return render(request, 'd_store/possiblebuyer.html', context)
 
 def calculate_payment(request):
     try:

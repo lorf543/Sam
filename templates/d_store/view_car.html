@@ -61,8 +61,33 @@
             </button>
         </div>
         <!--mas vehiculos-->
-        <div class="pt-3">
-            <p>mas vehiculos</p>
+        <div class="pt-3 d-none d-lg-block">
+            <h5>Más Vehículos</h5>
+            <div id="carouselMoreVehicles" class="carousel slide " data-bs-ride="carousel">
+                <div class="carousel-inner swiper mySwipe">
+                    {% for car in cars %}
+                        {% if forloop.first %}<div class="carousel-item active">{% else %}
+                        <div class="carousel-item swiper-slide">{% endif %}
+                            <a class="" href="{% url 'car_view' car.slug %}" hx-boost="true">
+                                <div class="d-flex justify-content-center">
+                                    <img src="{{ car.product_imange.first.image.url }}" class="d-block" alt="{{ car.brand }}" style="height: 140px;">
+                                </div>
+                                <div class="carousel-caption d-none d-md-block">
+                                    <h5>{{ car.brand }} {{ car.model }}</h5>
+                                    <p>${{ car.price|intcomma }}</p>
+                                </div>
+                            </a>
+                            <div class="swiper-pagination"></div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselMoreVehicles" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselMoreVehicles" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -107,14 +132,16 @@
             <div class="d-flex gap-4">
                 <p class="fs-4">{{ car.brand }} {{ car.model }} {{ car.year }}</p>
                 {% if user.is_authenticated %}
-                    {% if car.possiblebuyercar.all %}
-                        <div class="position-relative">
-                            <a href="{% url 'buyer_list' car.id %}">
-                                <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-danger rounded-circle tooltip-trigger">
-                                    <span class="visually-hidden">New alerts</span>
-                                </span>
-                            </a>
-                        </div>
+                    {% if user.is_superuser %}
+                        {% if car.possiblebuyercar.all %}
+                            <div class="position-relative">
+                                <a href="{% url 'buyer_list' car.id %}">
+                                    <span class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-danger rounded-circle tooltip-trigger">
+                                        <span class="visually-hidden">New alerts</span>
+                                    </span>
+                                </a>
+                            </div>
+                        {% endif %}
                     {% endif %}
                 {% endif %}
             </div>
@@ -161,7 +188,56 @@
                 </div>
             </div>
         </div>
+                <!--mas vehiculos-->
+                <div class="pt-3 d-lg-none">
+                    <hr>
+                    <h5>Más Vehículos</h5>
+                    <div id="carouselMoreVehicles" class="carousel slide  d-lg-block" data-bs-ride="carousel">
+                        <div class="carousel-inner swiper mySwipe">
+                            {% for car in cars %}
+                                {% if forloop.first %}<div class="carousel-item active">{% else %}
+                                <div class="carousel-item swiper-slide">{% endif %}
+                                    <a class="" href="{% url 'car_view' car.slug %}" hx-boost="true">
+                                        <div class="d-flex justify-content-center">
+                                            <img src="{{ car.product_imange.first.image.url }}" class="d-block" alt="{{ car.brand }}" style="height: 140px;">
+                                        </div>
+                                        <div class="carousel-caption d-none d-md-block">
+                                            <h5>{{ car.brand }} {{ car.model }}</h5>
+                                            <p>${{ car.price|intcomma }}</p>
+                                        </div>
+                                    </a>
+                                    <div class="swiper-pagination"></div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselMoreVehicles" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselMoreVehicles" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+
+        
     </div>
     
 </section>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        new Swiper('.swiper-container', {
+            slidesPerView: 3,  // Cantidad de autos visibles al mismo tiempo
+            spaceBetween: 30,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            loop: true,
+        });
+    });
+  </script>
 {% endblock content %}

@@ -49,8 +49,7 @@ class UserProfile(models.Model):
 def create_user_profile(sender, instance, created, **kwargs):
     if created:  # Si el usuario es nuevo
         UserProfile.objects.create(user=instance)    
-    
-    
+      
 
 
 class Category(models.Model):
@@ -109,7 +108,7 @@ class Car(models.Model):
     def save(self, *args, **kwargs):
         
         if not self.slug:
-            self.slug = slugify(f"{self.brand}-{self.model}-{self.price}")
+            self.slug = slugify(f"{self.brand}-{self.model}-{self.year}")
             
         self.name = f"{self.brand} - {self.price}"        
         super().save(*args, **kwargs)

@@ -14,7 +14,6 @@
 {% include "components/navbar.html" %}
 
 {% if not request.user.is_superuser %}
-  <!-- Vista para usuarios normales (no superusuarios) -->
   <section class="container pt-5">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
@@ -29,7 +28,6 @@
     </ul>
 
     <div class="tab-content" id="myTabContent">
-      <!-- Pestaña de Facturas -->
       <div class="tab-pane fade show active" id="facturas" role="tabpanel">
         <table class="table">
           <thead>
@@ -52,78 +50,9 @@
           </tbody>
         </table>
       </div>
-
-      <!-- Pestaña de Datos Personales -->
-      <div class="tab-pane fade" id="datos_personales" role="tabpanel">
-        <a href="{% url 'edit_profile' %}" hx-boost="true">Editar</a>
-        <div class="col-lg-8 pt-2">
-          <div class="card mb-4">
-            <div class="card-body ajust">
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Nombre</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0 fw-bolder">{{ current_user.first_name }}</p>
-                </div>
-              </div>
-              <hr>
-
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Apellido</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0 fw-bolder">{{ current_user.last_name }}</p>
-                </div>
-              </div>
-              <hr>
-
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Email</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0 fw-bolder">{{ current_user.email }}</p>
-                </div>
-              </div>
-              <hr>
-
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Teléfono</p>
-                </div>
-                <div class="col-sm-9">
-                  <p class="text-muted mb-0 fw-bolder">{{ user_profile.phone }}</p>
-                </div>
-              </div>
-              <hr>
-
-              <div class="row">
-                <div class="col-sm-3">
-                  <p class="mb-0">Dirección</p>
-                </div>
-                <div class="col-sm-9" style="line-height: 20px;">
-                  <p class="text-muted mb-0 fw-bolder">{{ user_profile.address }} {{ user_profile.city }}</p>
-                  <p class="text-muted mb-0 fw-bolder">{{ user_profile.provincia }} {{ user_profile.country }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Pestaña de Pedidos -->
-      <div class="tab-pane fade" id="pedidos" role="tabpanel">
-        <table class="table">
-          <!-- Aquí puedes agregar el contenido de la tabla de pedidos -->
-        </table>
-      </div>
     </div>
   </section>
-
 {% else %}
-  <!-- Vista para superusuarios -->
   <section class="container pt-5">
     <ul class="nav nav-tabs" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
@@ -135,7 +64,6 @@
     </ul> 
 
     <div class="tab-content" id="myTabContent">
-      <!-- Pestaña de Tracker -->
       <div class="tab-pane fade show active" id="tracker" role="tabpanel">
         <h3>Potenciales Compradores</h3>
         <table class="table table-hover pt-2">
@@ -149,7 +77,7 @@
             </tr>
           </thead>
           <tbody>
-            {% for buyer in buyerlist %}
+            {% for buyer in buyerlist_paginated %}
               <tr>
                 <th scope="row">{{ forloop.counter }}</th>
                 <td><a href="{% url 'handle_buyer' buyer.id %}">{{ buyer.name }}</a></td>
@@ -166,11 +94,26 @@
             {% endfor %}
           </tbody>
         </table>
-      </div>
-
-      <!-- Pestaña de Customer Pedidos -->
-      <div class="tab-pane fade" id="customerPedidos" role="tabpanel">
-        <a class="btn btn-success mt-3 mx-3" href="{% url 'create_pedido' %}" hx-boost="true">Agregar Pedido</a>
+        
+        <div class="pagination">
+          {% if buyerlist_paginated.has_other_pages %}
+          <div class="d-flex justify-content-center">
+            <ul class="pagination">
+              {% if buyerlist_paginated.has_previous %}
+              <li class="page-item"><a class="page-link" href="?page={{ buyerlist_paginated.previous_page_number }}" hx-boost="true">Anterior</a></li>
+              {% endif %}
+              {% for page_num in buyerlist_paginated.paginator.page_range %}
+              <li class="page-item {% if page_num == buyerlist_paginated.number %}active{% endif %}">
+                <a class="page-link" href="?page={{ page_num }}" hx-boost="true">{{ page_num }}</a>
+              </li>
+              {% endfor %}
+              {% if buyerlist_paginated.has_next %}
+              <li class="page-item"><a class="page-link" href="?page={{ buyerlist_paginated.next_page_number }}" hx-boost="true">Siguiente</a></li>
+              {% endif %}
+            </ul>
+          </div>
+          {% endif %}
+        </div>
       </div>
     </div>
   </section>

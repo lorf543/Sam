@@ -11,13 +11,13 @@
         aqui van los
     </div> {% endcomment %}
 
-    <div class="grid-card pt-5">
+    <div class="grid-card py-5">
         {% for car in cars %}
             <a class="car-card" href="{% url 'car_view' car.slug %}" >
                 <div>
                     {% for image in car.product_imange.all %}
                         {% if image.main %}
-                            <img  loading="lazy" class="img-fluid" src="{{ image.image.url }}" alt="">
+                            <img  loading="lazy" class="img-fluid" src="{{ image.image.url }}" alt="{{car.slug}}">
                         {% endif %}
                     {% endfor %}
                 </div>
