@@ -7,7 +7,7 @@
 {% include "components/navbar.html" %}
 <section class="container">
     <!-- Formulario para ingresar la cédula -->
-    <form method="post" hx-post="{% url 'possiblebuyer' car.slug %}" hx-target="#result-container" >
+    <form method="post" hx-boost="true" >
         {% csrf_token %}
 
         <div class="pt-5 mt-4 d-lg-flex gap-5" >
@@ -27,7 +27,9 @@
                 <div class="">
                     {{ form.comment|as_crispy_field }} 
                 </div>
-                <div>{{message}}</div>
+                {% if message %}
+                    <div class="alert alert-info">{{ message }}</div>
+                {% endif %}
             </div>
             <div class="vr d-none d-lg-block"></div>
             <div>

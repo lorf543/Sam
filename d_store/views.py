@@ -147,20 +147,23 @@ def buyer_list(request, pk):
     return render(request, 'd_store/buyer_list.html', context)
     
 def possiblebuyer(request, slug):
-    form = PossibleBuyerForm()
     car = get_object_or_404(Car, slug=slug)
+    form = PossibleBuyerForm(request.POST or None)  # Ahora se pasa request.POST cuando es POST
     context = {'car': car, 'form': form}
+
     if request.method == 'POST':
         if form.is_valid():
             possible_buyer = form.save(commit=False)
             possible_buyer.car = car
             possible_buyer.save()
-            context['message'] = "Tu solicitud ha sido enviada. Tan pronto como sea posible, estaremos en contacto contigo"
-            return render(request, 'd_store/possiblebuyer.html', context)
+            context['message'] = "Tu solicitud ha sido enviada. Tan pronto como sea posible, estaremos en contacto contigo."
+            
         else:
             context['message'] = "Error: por favor, revise los campos del formulario"
-            return render(request, 'd_store/possiblebuyer.html', context)
+            print(form.errors)  # Verifica que esto aparezca en la consola
+        context['form']=PossibleBuyerForm()
     return render(request, 'd_store/possiblebuyer.html', context)
+
 
 def calculate_payment(request):
     try:
