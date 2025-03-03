@@ -24,10 +24,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link p-c" href="{% url 'category_list' %}" hx-boost="true">Repuesto</a>
-                    </li> 
-                    {% comment %} <li class="nav-item">
+                     <li class="nav-item">
                         <a class="nav-link p-c" href="">Our Story</a>
-                    </li> {% endcomment %}
+                    </li> 
 
                 </ul>
                 <!-- para patantallas grandes-->
@@ -38,7 +37,7 @@
                     {% if user.is_authenticated %}
 
                     <li class="nav-item">
-                        <a class="nav-link p-c mt-2" href="{% url 'my_account' %}">My Account</a>
+                        <a class="nav-link p-c mt-2" href="{% url 'my_account' %}">Mi cuenta</a>
                     </li>
 
                         <li class="nav-item position-relative">
@@ -51,7 +50,8 @@
                                     {{cart_count}}
                                 </span>
                             </a>
-                        </li>
+                        </li> 
+
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link p-c mt-2" href="{% url 'account_login' %}">Login</a>

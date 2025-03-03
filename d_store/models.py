@@ -160,6 +160,7 @@ class Product(models.Model):
             self.slug = slugify(f"{self.brand}-{self.code}")
         if not self.image:
             self.image = 'images/default.jpg'
+        
         super().save(*args, **kwargs)
                    
 class CartItem(models.Model):

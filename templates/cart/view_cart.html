@@ -27,24 +27,22 @@
       font-size: 18px;
     }
   }
-  
 </style>
 
-
-
 {% include "components/navbar.html" %}
+
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-8">
       <h2 class="text-center mb-4">Tu Carrito</h2>
 
-      <div id="cart-items" class="card shadow-sm">  
-
-        <div class="">
+      <div id="cart-items" class="card shadow-sm">
+        <div class="card-body">
           <table class="table">
             <thead>
               <tr>
                 <th>Nombre</th>
+                <th>Stock</th>
                 <th>Precio</th>
                 <th>Subtotal</th>
                 <th>Opciones</th>
@@ -52,56 +50,76 @@
             </thead>
             <tbody>
               {% for item in cart_items %}
-              <tr>
-                <td>{{ item.product.brand }} - {{item.product.stock }} </td>
-                <td>${{ item.product.price|intcomma }}</td>
-                <td>${{ item.get_total_price|intcomma }}</td>
-                <td>
-                  <div class="d-flex align-items-center">
-                    <!-- Botón de decremento -->
-                    <button class="btn btn-danger btn-sm"
-                      hx-post="{% url 'update_cart_items' item.id %}"
-                      hx-target="#cart-items"
-                      hx-vals='{"quantity": "{{ item.quantity|add:"-1" }}"}'>-</button>
+                <tr>
+                  <td>{{ item.product.brand }}</td>
+                  <td>{{ item.product.stock }}</td>
+                  <td>${{ item.product.price|intcomma }}</td>
+                  <td>${{ item.get_total_price|intcomma }}</td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <!-- Botón de decremento -->
 
-                    <!-- Muestra la cantidad del artículo -->
-                    <span class="mx-2">{{ item.quantity }}</span>
+                      <button class="btn btn-danger btn-sm"
+                        hx-post="{% url 'update_cart_items' item.id %}"
+                        hx-target="#cart-items"
+                        hx-vals='{"quantity": "{{ item.quantity|add:"-1" }}"}' 
+                        {% csrf_token %}-</button>
 
-                    <!-- Botón de incremento -->
-                    {% if not item.quantity >= item.product.stock  %}
-                    <button class="btn btn-success btn-sm"
-                      hx-post="{% url 'update_cart_items' item.id %}"
-                      hx-target="#cart-items"
-                      hx-vals='{"quantity": "{{ item.quantity|add:"1" }}"}'>+</button>
+                      <!-- Muestra la cantidad del artículo -->
+                      <span class="mx-2">{{ item.quantity }}</span>
+
+                      <!-- Botón de incremento -->
+                      {% if not item.quantity >= item.product.stock %}
+                      {% csrf_token %}
+                        <button class="btn btn-success btn-sm"
+                        hx-post="{% url 'update_cart_items' item.id %}"
+                        hx-target="#cart-items"
+                        hx-vals='{"quantity": "{{ item.quantity|add:"1" }}"}' 
+                        {% csrf_token %}+</button>                     
+                      {% endif %}
                     </div>
-                  {% endif %}
-                </td>
-
-
-              </tr>
+                  </td>
+                </tr>
               {% endfor %}
             </tbody>
-
           </table>
+
           <div class="px-5 py-2" id="cart-total" hx-get="{% url 'update_cart_total' %}" hx-trigger="load">
             <span class="font-weight-bold">Total: ${{ total_price|intcomma }}</span>
           </div>
-
         </div>
-
       </div>
 
-      {% if cart_items %}
+      {% if request.user.is_superuser %}
+        <div class="mb-3">
+          <form hx-post="{% url 'check_customer' %}" 
+            hx-trigger="keyup change delay:500ms" 
+            hx-target="#customer_info" 
+            hx-swap="innerHTML">
+            {% csrf_token %}
+            <label for="customer-phone" class="form-label">Número de teléfono del cliente</label>
+            <input type="text" 
+              class="form-control" 
+              id="customer-phone" 
+              name="customer-phone" 
+              placeholder="Ingresa el número de teléfono">
+          </form>
+        </div>
+        <div id="customer_info">
+        </div>
+      {% else %}
+        {% if cart_items %}
         <form method="POST" action="{% url 'checkout_htmx' %}" class="text-right mt-3">
           {% csrf_token %}
           <button type="submit" class="btn btn-primary">Proceder al Pago</button>
         </form>
-      {% else %}
-      <p class="text-center pt-4">no tienes nada agreado al carrito</p>
+        {% else %}
+          <p class="text-center pt-4">No tienes nada agregado al carrito</p>
+        {% endif %}
+
       {% endif %}
     </div>
   </div>
 </div>
 
 {% endblock %}
-

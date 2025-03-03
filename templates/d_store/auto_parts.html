@@ -69,7 +69,6 @@
                       </button>
                     {% else %}
                       <!-- Producto no está en el carrito -->
-                       {% if not user.is_superuser %}
                         <button class="btn btn-success"
                                 hx-post="{% url 'add_to_cart_btn' product.id %}"
                                 hx-target="#button-{{ product.id }}"
@@ -77,13 +76,6 @@
                                 hx-headers='{"X-CSRFToken": "{{ csrf_token }}" }'>
                                 Agregar al carrito
                         </button>
-                      {% endif %}
-                      {% if user.is_authenticated and user.is_superuser %}
-                        <a href="{% url 'vender' product.slug %}" class="btn btn-warning">
-                          Vender
-                        </a>
-                      {% endif %} 
-
                     {% endif %}
                   </div>
                 {% else %}

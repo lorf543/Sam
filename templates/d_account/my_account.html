@@ -70,20 +70,20 @@
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Teléfono</th>
-              <th scope="col">Correo</th>
-              <th scope="col">Contactado</th>
+              <th scope="col" class="d-lg-inline-block w-25">Nombre</th>
+              <th scope="col" class="d-none d-lg-inline-block w-25">Teléfono</th>
+              <th scope="col" class="d-none d-lg-inline-block w-25">Correo</th>
+              <th scope="col" class="d-lg-inline-block w-25">Contactado</th>
             </tr>
-          </thead>
+          </thead>  
           <tbody>
             {% for buyer in buyerlist_paginated %}
               <tr>
                 <th scope="row">{{ forloop.counter }}</th>
-                <td><a href="{% url 'handle_buyer' buyer.id %}">{{ buyer.name }}</a></td>
-                <td>{{ buyer.phone }}</td>
-                <td>{{ buyer.email }}</td>
-                <td>
+                <td class="d-lg-inline-block w-25"><a href="{% url 'handle_buyer' buyer.id %}">{{ buyer.name }}</a></td>
+                <td class="d-none d-lg-inline-block w-25">{{ buyer.phone }}</td>
+                <td class="d-none d-lg-inline-block w-25">{{ buyer.email }}</td>
+                <td class="d-lg-inline-block">
                   {% if buyer.checked %}
                     ✅
                   {% else %}

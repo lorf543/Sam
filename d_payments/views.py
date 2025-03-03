@@ -164,8 +164,7 @@ def update_cart_items(request, pk):
 def update_cart_total(request):
     cart_items = CartItem.objects.filter(user=request.user)
     total_price = sum(item.get_total_price() for item in cart_items)
-
-
+    
     context = {
         'total_price': total_price,
     }
@@ -189,6 +188,7 @@ def vender(request, slug):
     # Obtén el producto usando el slug
     product = get_object_or_404(Product, slug=slug)
     form = SaleForm()
+
     
     # Asegúrate de que el producto existe
     if not product:
@@ -230,13 +230,11 @@ def check_customer(request):
 
 @login_required(login_url="login")
 def procesar_venta(request, slug):
-    # Recuperar el producto basado en el slug proporcionado
     product = get_object_or_404(Product, slug=slug)
-    print(f"Producto recuperado: {product}, Stock: {product.stock}")
 
     phone = request.session.get('phone')
     customer = UserProfile.objects.filter(phone=phone).first()
-    print(f"Cliente encontrado: {customer}")
+
     
     if request.method == 'POST':
         form = SaleForm(request.POST)
@@ -280,39 +278,6 @@ def procesar_venta(request, slug):
 
     return render(request, 'd_payments/ventas/procesar_venta.html', {'form': form})
 
-
-    #         # Make sure the product and quantity are valid
-    #         if product and quantity > 0:
-    #             # Create an invoice for the sale
-    #             invoice = InvoinceProduct(
-    #                 user=request.user,
-    #                 product=product,
-    #                 quantity=quantity,
-    #                 payment_method=payment_method,
-    #                 total_amount=product.price * quantity,
-    #                 currency='USD',  # Adjust the currency as needed
-    #                 status='Pagado',  # Set the status based on your logic
-    #                 added_by=request.user,
-    #                 updated_by=request.user,
-    #             )
-    #             # Save the invoice object to the database
-    #             invoice.save()
-
-    #             # Update the product stock
-    #             product.stock -= quantity
-    #             product.save()
-
-    #             # Redirect or render a confirmation page with the invoice details
-    #             return render(request, 'd_payments/ventas/confirmacion.html', {'invoice': invoice})
-    #         else:
-    #             # Handle invalid data (e.g., product or quantity issues)
-    #             return render(request, 'd_payments/ventas/error.html', {'error': 'Invalid product or quantity'})
-    #     else:
-    #         # Handle the case where the form is not valid
-    #         return render(request, 'd_payments/ventas/error.html', {'error': 'Formulario no válido'})
-    # else:
-    #     form = SaleForm()  # Initialize the form for the user to fill
-    # return render(request, 'd_payments/ventas/procesar_venta.html', {'product': product, 'customer': customer})
 
 def add_customer(request):
     if request.method == 'POST':
