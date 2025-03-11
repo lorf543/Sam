@@ -1,25 +1,34 @@
 {% extends "base.html" %}
 {% load humanizelib %}
+{% load static %}
 
 
 {% block content %}
 {% include "components/navbar.html" %}
 {% include "components/header.html" %}
 
+
 <section class="container car-filters">
     {% comment %} <div class="filtros pt-5">
         aqui van los
     </div> {% endcomment %}
 
+
+
+
     <div class="grid-card py-5">
         {% for car in cars %}
             <a class="car-card" href="{% url 'car_view' car.slug %}" >
                 <div>
-                    {% for image in car.product_imange.all %}
-                        {% if image.main %}
-                            <img  loading="lazy" class="img-fluid" src="{{ image.image.url }}" alt="{{car.slug}}">
+                {% for image in car.product_imange.all %}
+                    {% if image.main %}
+                        {% if image.image and image.image.url %}
+                            <img loading="lazy" class="img-car" src="{{ image.image.url }}" alt="{{ car.slug }}">
+                        {% else %}
+                            <img src="{% static 'images/240x240.png' %}" alt="Default Image">  
                         {% endif %}
-                    {% endfor %}
+                    {% endif %}
+                {% endfor %}
                 </div>
     
                 <div class="car-info">            

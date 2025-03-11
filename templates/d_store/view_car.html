@@ -43,13 +43,17 @@
     <div class="carousel-container">
         <div id="carouselExample" class="carousel slide">
             <div class="carousel-inner">
-                {% for image in car.product_imange.all %}
-                    <div class="carousel-item {% if forloop.first %}active{% endif %}">
-                        <div class="image-car">
-                            <img loading="lazy" src="{{ image.image.url }}" alt="{{ car.brand }}">
+                {% if image.image and image.image.url %}
+                    {% for image in car.product_imange.all %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <div class="image-car">
+                                <img loading="lazy" src="{{ image.image.url }}" alt="{{ car.brand }}">
+                            </div>
                         </div>
-                    </div>
-                {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <h3 class="text-danger">No has agreado una imagen</h3>
+                {% endif %}
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -70,7 +74,9 @@
                         <div class="carousel-item swiper-slide">{% endif %}
                             <a class="" href="{% url 'car_view' car.slug %}" hx-boost="true">
                                 <div class="d-flex justify-content-center">
-                                    <img src="{{ car.product_imange.first.image.url }}" class="d-block" alt="{{ car.brand }}" style="height: 140px;">
+                                    {% if image.image and image.image.url %}
+                                        <img src="{{ car.product_imange.first.image.url }}" class="d-block" alt="{{ car.brand }}" style="height: 140px;">
+                                    {% endif %}
                                 </div>
                                 <div class="carousel-caption d-none d-md-block">
                                     <h5>{{ car.brand }} {{ car.model }}</h5>
@@ -199,7 +205,9 @@
                                 <div class="carousel-item swiper-slide">{% endif %}
                                     <a class="" href="{% url 'car_view' car.slug %}" hx-boost="true">
                                         <div class="d-flex justify-content-center">
-                                            <img src="{{ car.product_imange.first.image.url }}" class="d-block" alt="{{ car.brand }}" style="height: 140px;">
+                                            {% if image.image and image.image.url %}
+                                                <img src="{{ car.product_imange.first.image.url }}" class="d-block" alt="{{ car.brand }}" style="height: 140px;">
+                                            {% endif %}
                                         </div>
                                         <div class="carousel-caption d-none d-md-block">
                                             <h5>{{ car.brand }} {{ car.model }}</h5>
